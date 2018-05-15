@@ -1,5 +1,5 @@
-hash: d06de603cf4296cafebfef349c0279f32f78110e28afda1be52b15e7ee160707
-updated: 2018-05-09T14:35:28.146441248-07:00
+hash: 9267f0abd55f965bb855cc5534927059cff82c53a7050def719451c635ef205a
+updated: 2018-05-09T15:00:28.169108904-07:00
 imports:
 - name: github.com/btcsuite/btcd
   version: 675abc5df3c5531bc741b56a765e35623459da6d
@@ -269,4 +269,12 @@ imports:
   - transport
 - name: gopkg.in/yaml.v2
   version: 5420a8b6744d3b0345ab293f6fcba19c978f1183
+- name: k8s.io/apimachinery
+  version: 5937a4130a6bf81b86b03a6c6e7cd974a5018f59
+  subpackages:
+  - '...'
+- name: k8s.io/client-go
+  version: 23781f4d6632d88e869066eaebb743857aa1ef9b
+  subpackages:
+  - '...'
 testImports: []

@@ -41,3 +41,10 @@ import:
   version: ^1.9.0
   subpackages:
   - trees/avltree
+- package: k8s.io/client-go
+  version: ^7.0.0
+  subpackages:
+  - '...'
+- package: k8s.io/apimachinery
+  subpackages:
+  - '...'
