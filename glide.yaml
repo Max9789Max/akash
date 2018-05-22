@@ -48,3 +48,4 @@ import:
 - package: k8s.io/apimachinery
   subpackages:
   - '...'
+- package: github.com/boz/go-lifecycle

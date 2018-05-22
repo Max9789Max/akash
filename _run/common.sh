@@ -2,6 +2,7 @@ AKASH_ROOT=../..
 
 DATA_ROOT=data
 AKASH_DIR=$DATA_ROOT/client
+PROVIDER_DIR=$DATA_ROOT/provider
 AKASHD_DIR=$DATA_ROOT/node
 
 _akash() {

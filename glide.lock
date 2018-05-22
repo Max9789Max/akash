@@ -1,6 +1,8 @@
-hash: 9267f0abd55f965bb855cc5534927059cff82c53a7050def719451c635ef205a
-updated: 2018-05-15T14:58:48.566618979-07:00
+hash: 0f1e9a2e5c2c0a2fa387bc7234f3e121a12005af5193655a49d36a8146d84ea5
+updated: 2018-05-16T16:33:12.637351903-07:00
 imports:
+- name: github.com/boz/go-lifecycle
+  version: c39961a5a0ce6b046f15d62bcbed79701666a9e0
 - name: github.com/btcsuite/btcd
   version: 675abc5df3c5531bc741b56a765e35623459da6d
   subpackages:
@@ -101,7 +103,7 @@ imports:
 - name: github.com/spf13/pflag
   version: 583c0c0531f06d5278b7d917446061adc344b5cd
 - name: github.com/spf13/viper
-  version: 8dc2790b029dc41e2b8ff772c63c26adbb1db70d
+  version: 15738813a09db5c8e5b60a19d67d3f9bd38da3a4
 - name: github.com/stretchr/objx
   version: a5cfa15c000af5f09784e5355969ba7eb66ef0de
 - name: github.com/stretchr/testify
