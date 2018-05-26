@@ -4,6 +4,7 @@ import (
 	"context"
 
 	lifecycle "github.com/boz/go-lifecycle"
+	"github.com/ovrclk/akash/keys"
 	"github.com/ovrclk/akash/provider/cluster"
 	"github.com/ovrclk/akash/provider/event"
 	"github.com/ovrclk/akash/provider/session"
@@ -74,11 +75,13 @@ loop:
 			switch ev := ev.(type) {
 			case event.TxCreateOrder:
 				// new order
+				opath := keys.OrderID(ev.OrderID()).Path()
 
 				order, err := newOrder(s, ev)
 
 				if err != nil {
 					// todo: handle error
+					s.session.Log().Error("handling order", "order", opath, "err", err)
 					break
 				}
 

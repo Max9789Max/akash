@@ -37,7 +37,7 @@ func newOrder(e *service, ev event.TxCreateOrder) (*order, error) {
 	session := e.session.ForModule("bidengine-order")
 
 	log := session.Log().
-		With("order-id", keys.OrderID(ev.OrderID()).Path())
+		With("order", keys.OrderID(ev.OrderID()).Path())
 
 	order := &order{
 		order:   ev.OrderID(),
