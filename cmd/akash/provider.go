@@ -152,7 +152,7 @@ func doProviderRunCommand(session session.Session, cmd *cobra.Command, args []st
 		bus := event.NewBus()
 		defer bus.Close()
 
-		errch := make(chan error, 2)
+		errch := make(chan error, 3)
 
 		go func() {
 			defer cancel()
@@ -171,15 +171,24 @@ func doProviderRunCommand(session session.Session, cmd *cobra.Command, args []st
 
 		go func() {
 			defer cancel()
+			<-service.Done()
+			errch <- nil
+		}()
+
+		go func() {
+			defer cancel()
 			errch <- manifest.RunServer(ctx, session.Log(), "3001", service.ManifestHandler())
 		}()
 
-		<-service.Done()
-		cancel()
+		var reterr error
+		for i := 0; i < 3; i++ {
+			if err := <-errch; err != nil {
+				session.Log().Error("error", "err", err)
+				reterr = err
+			}
+		}
 
-		<-errch
-		<-errch
-		return nil
+		return reterr
 	})
 }
 
