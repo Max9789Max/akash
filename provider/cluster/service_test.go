@@ -34,5 +34,5 @@ func TestService(t *testing.T) {
 	require.NoError(t, c.Close())
 
 	_, err = c.Reserve(order.OrderID, group)
-	assert.Err(t, err, cluster.ErrNotRunning)
+	assert.Error(t, err, cluster.ErrNotRunning)
 }

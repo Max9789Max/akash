@@ -112,9 +112,10 @@ loop:
 		case ev := <-h.sub.Events():
 			switch ev := ev.(type) {
 			case event.LeaseWon:
-
 				did := ev.LeaseID.Deployment
 				mstate := h.getManifestState(did)
+
+				h.session.Log().Info("lease won", "deployment", did.EncodeString())
 
 				// TODO: validate single lease
 				mstate.leaseID = &ev.LeaseID
@@ -131,16 +132,18 @@ loop:
 		case req := <-h.mreqch:
 			// new manifest received
 
-			// TODO: defer response until validation
-			req.ch <- nil
-
 			did := req.value.Deployment
 			mstate := h.getManifestState(did)
+
+			h.session.Log().Info("manifest received", "deployment", did.EncodeString())
 
 			// TODO: validate single manifest
 			mstate.request = req.value
 
 			h.checkManifestState(ctx, mstate, did)
+
+			// TODO: defer response until validation
+			req.ch <- nil
 
 		case req := <-h.deploymentch:
 
@@ -156,12 +159,14 @@ loop:
 			mstate := h.mstates[key]
 
 			if mstate == nil {
-				h.session.Log().Error("rogue deployment received", "deployment-id", key)
+				h.session.Log().Error("rogue deployment received", "deployment", key)
 				break
 			}
 
 			mstate.deployment = deployment
 			mstate.deploymentPending = false
+
+			h.session.Log().Info("deployment received", "deployment", key)
 
 			h.checkManifestState(ctx, mstate, did)
 
@@ -177,12 +182,15 @@ func (h *handler) getManifestState(did base.Bytes) *manifestState {
 
 	if mstate == nil {
 		mstate = &manifestState{}
+		h.mstates[key] = mstate
 	}
+
 	return mstate
 }
 
 func (h *handler) checkManifestState(ctx context.Context, mstate *manifestState, did base.Bytes) {
 	if mstate.complete() {
+
 		// TODO: validate manifest
 
 		// publish complete manifest
@@ -191,6 +199,7 @@ func (h *handler) checkManifestState(ctx context.Context, mstate *manifestState,
 			Manifest:   mstate.request.Manifest,
 			Deployment: mstate.deployment,
 		})
+		h.session.Log().Debug("manifest complete", "deployment", did.EncodeString())
 		return
 	}
 
@@ -202,6 +211,7 @@ func (h *handler) checkManifestState(ctx context.Context, mstate *manifestState,
 }
 
 func (h *handler) fetchDeployment(ctx context.Context, key base.Bytes) {
+	h.session.Log().Debug("fetching deployment", "deployment", key.EncodeString())
 	h.wg.Add(1)
 	go func() {
 		defer h.wg.Done()
